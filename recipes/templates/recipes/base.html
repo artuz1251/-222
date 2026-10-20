@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Рецепты</title>
+</head>
+<body>
+    <h1>Информация о рецептах</h1>
+    <p>
+        <a href="{% url 'recipe_list' %}">Список рецептов</a> |
+        <a href="{% url 'add_recipe' %}">Добавить рецепт</a> |
+        <a href="{% url 'upload_file' %}">Загрузить XML</a>
+    </p>
+    <hr>
+
+    {% for message in messages %}
+        <p style="color: {% if message.tags == 'error' %}red{% else %}green{% endif %}">{{ message }}</p>
+    {% endfor %}
+
+    {% block content %}{% endblock %}
+</body>
+</html>
