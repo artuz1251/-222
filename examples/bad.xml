@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<recipe>
+    <name>Омлет</name>
+    <category>Завтрак</category>
+    <cook_time>abc</cook_time>
+    <servings>2</servings>
+    <ingredients>Яйца, молоко</ingredients>
+    <instructions>Взбить и пожарить.</instructions>
+</recipe>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<recipe>
+    <name>Блины</name>
+    <category>Выпечка</category>
+    <cook_time>30</cook_time>
+    <servings>4</servings>
+    <ingredients>Молоко 500 мл
+Яйца 2 шт
+Мука 250 г
+Сахар 2 ст. ложки
+Соль щепотка</ingredients>
+    <instructions>Смешать яйца, молоко, сахар и соль. Добавить муку и размешать до однородности. Жарить на разогретой сковороде с двух сторон.</instructions>
+</recipe>
