@@ -1,37 +1,73 @@
 {% extends 'recipes/base.html' %}
 
 {% block content %}
-    <h2>Все рецепты из файлов</h2>
+    <h2>Все рецепты</h2>
 
-    {% if not files %}
-        <p>На сервере нет ни одного файла.</p>
+    <div class="btn-group mb-3">
+        <a href="?source=db" class="btn btn-outline-primary {% if source == 'db' %}active{% endif %}">Из базы данных</a>
+        <a href="?source=xml" class="btn btn-outline-primary {% if source == 'xml' %}active{% endif %}">Из XML-файлов</a>
+    </div>
+
+    {% if source == 'db' %}
+        <input type="text" id="search" class="form-control mb-3" placeholder="Поиск по названию, категории, ингредиентам, способу приготовления...">
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Название</th><th>Категория</th><th>Время (мин)</th><th>Порции</th>
+                        <th>Ингредиенты</th><th>Способ приготовления</th><th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody id="rows">
+                    {% include 'recipes/_db_rows.html' %}
+                </tbody>
+            </table>
+        </div>
+
+        <script>
+            // AJAX-поиск: при вводе запрашиваем строки таблицы с сервера
+            var input = document.getElementById('search');
+            var rows = document.getElementById('rows');
+            input.addEventListener('input', function () {
+                fetch("{% url 'search_recipes' %}?q=" + encodeURIComponent(input.value))
+                    .then(function (response) { return response.text(); })
+                    .then(function (html) { rows.innerHTML = html; });
+            });
+        </script>
     {% else %}
-        <table border="1" cellpadding="5">
-            <tr>
-                <th>Название</th>
-                <th>Категория</th>
-                <th>Время (мин)</th>
-                <th>Порции</th>
-                <th>Ингредиенты</th>
-                <th>Способ приготовления</th>
-            </tr>
-            {% for r in recipes %}
-            <tr>
-                <td>{{ r.name }}</td>
-                <td>{{ r.category }}</td>
-                <td>{{ r.cook_time }}</td>
-                <td>{{ r.servings }}</td>
-                <td>{{ r.ingredients|linebreaksbr }}</td>
-                <td>{{ r.instructions|linebreaksbr }}</td>
-            </tr>
-            {% endfor %}
-        </table>
+        {% if not files %}
+            <div class="alert alert-info">На сервере нет ни одного XML-файла.</div>
+        {% else %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Название</th><th>Категория</th><th>Время (мин)</th><th>Порции</th>
+                            <th>Ингредиенты</th><th>Способ приготовления</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in recipes %}
+                        <tr>
+                            <td>{{ r.name }}</td>
+                            <td>{{ r.category }}</td>
+                            <td>{{ r.cook_time }}</td>
+                            <td>{{ r.servings }}</td>
+                            <td>{{ r.ingredients|linebreaksbr }}</td>
+                            <td>{{ r.instructions|linebreaksbr }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
-        {% if errors %}
-            <h3>Файлы с ошибками:</h3>
-            <ul>
-                {% for e in errors %}<li>{{ e }}</li>{% endfor %}
-            </ul>
+            {% if errors %}
+                <div class="alert alert-warning">
+                    <b>Файлы с ошибками:</b>
+                    <ul class="mb-0">{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul>
+                </div>
+            {% endif %}
         {% endif %}
     {% endif %}
 {% endblock %}

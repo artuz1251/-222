@@ -4,7 +4,7 @@
     <h2>Добавить рецепт</h2>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Сохранить в XML</button>
+        {% include 'recipes/_form.html' %}
+        <button type="submit" class="btn btn-primary">Сохранить</button>
     </form>
 {% endblock %}

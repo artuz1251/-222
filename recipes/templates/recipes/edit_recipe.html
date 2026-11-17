@@ -1,0 +1,11 @@
+{% extends 'recipes/base.html' %}
+
+{% block content %}
+    <h2>Редактировать рецепт «{{ recipe.name }}»</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% include 'recipes/_form.html' %}
+        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+        <a href="/?source=db" class="btn btn-secondary">Отмена</a>
+    </form>
+{% endblock %}

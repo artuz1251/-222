@@ -1,0 +1,20 @@
+{% for r in recipes %}
+<tr>
+    <td>{{ r.name }}</td>
+    <td>{{ r.category }}</td>
+    <td>{{ r.cook_time }}</td>
+    <td>{{ r.servings }}</td>
+    <td>{{ r.ingredients|linebreaksbr }}</td>
+    <td>{{ r.instructions|linebreaksbr }}</td>
+    <td class="text-nowrap">
+        <a href="{% url 'edit_recipe' r.pk %}" class="btn btn-sm btn-outline-primary">Изменить</a>
+        <form method="post" action="{% url 'delete_recipe' r.pk %}" class="d-inline"
+              onsubmit="return confirm('Удалить рецепт?');">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-outline-danger">Удалить</button>
+        </form>
+    </td>
+</tr>
+{% empty %}
+<tr><td colspan="7" class="text-center text-muted">Ничего не найдено</td></tr>
+{% endfor %}
