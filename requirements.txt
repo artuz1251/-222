@@ -1,2 +1,4 @@
 django
 defusedxml
+whitenoise
+gunicorn
