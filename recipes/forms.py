@@ -21,9 +21,23 @@ class RecipeForm(forms.Form):
                                    widget=forms.Textarea(attrs={'rows': 6}),
                                    validators=[no_control_chars])
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            if isinstance(field.widget, forms.Select):
+                field.widget.attrs['class'] = 'form-select'
+            else:
+                field.widget.attrs['class'] = 'form-control'
+
+
+class RecipeAddForm(RecipeForm):
+    """Форма добавления: пользователь выбирает, куда сохранять."""
+    storage = forms.ChoiceField(label='Куда сохранить',
+                                choices=[('db', 'В базу данных (SQLite)'), ('xml', 'В XML-файл')])
+
 
 class UploadForm(forms.Form):
-    file = forms.FileField(label='XML-файл')
+    file = forms.FileField(label='XML-файл', widget=forms.ClearableFileInput(attrs={'class': 'form-control'}))
 
     def clean_file(self):
         f = self.cleaned_data['file']
